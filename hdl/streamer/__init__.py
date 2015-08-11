@@ -66,7 +66,7 @@ class UDPStreamer(Module):
 
 
 class USBStreamer(Module):
-    def __init__(self, platform, pads):
+    def __init__(self, platform, pads, debug_scope=False):
         self.sink = sink = Sink([("data", 8)])
 
         # # #
@@ -80,7 +80,6 @@ class USBStreamer(Module):
         self.submodules.fifo = fifo = RenameClockDomains(AsyncFIFO([("data", 8)], 4),
                                           {"write": "sys", "read": "usb"})
         self.comb += Record.connect(sink, fifo.sink)
-
 
         self.specials += Instance("fx2_jpeg_streamer",
                                   # clk, rst
@@ -106,3 +105,18 @@ class USBStreamer(Module):
 
         # add VHDL sources
         platform.add_source_dir(os.path.join(platform.soc_ext_path, "hdl", "streamer", "vhdl"))
+
+        # Add a debugging litescope to the interface.
+        if debug_scope:
+            from misoclib.tools.litescope.frontend.la import LiteScopeLA
+            debug = (
+                pads.flagb,
+                pads.flagc,
+                pads.addr,
+                pads.cs_n,
+                pads.wr_n,
+                pads.rd_n,
+                pads.oe_n,
+                pads.pktend_n,
+            )
+            self.submodules.la = LiteScopeLA(debug, 4096)
