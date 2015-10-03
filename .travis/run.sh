@@ -112,7 +112,7 @@ for BOARD in $BOARDS; do
 			echo ""
 			diff -u /tmp/filelist.before /tmp/filelist.after|grep -v "@@"|grep "+"
 			echo "============================================="
-			return 1
+			exit
 		fi
 
 	done
