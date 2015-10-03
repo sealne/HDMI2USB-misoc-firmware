@@ -103,13 +103,11 @@ for BOARD in $BOARDS; do
                 echo ""
 		echo ""
 		echo ""
-		echo "============================================="
 		if ! diff -u /tmp/filelist.before /tmp/filelist.after|grep -v "@@"|grep "+" > /dev/null; then
-			echo "make clean did not leave any generated files behind"
-			echo "============================================="
+			echo "- make clean did not leave any generated files behind"
 		else
-			echo "make clean left these files behind:"
-			echo ""
+			echo "- make clean left these files behind"
+			echo "============================================="
 			diff -u /tmp/filelist.before /tmp/filelist.after|grep -v "@@"|grep -v "+++"|grep -v "---"|grep "+"
 			echo "============================================="
 			exit
