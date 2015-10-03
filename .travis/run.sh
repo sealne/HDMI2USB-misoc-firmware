@@ -110,7 +110,7 @@ for BOARD in $BOARDS; do
 		else
 			echo "make clean left these files behind:"
 			echo ""
-			diff -u /tmp/filelist.before /tmp/filelist.after|grep -v "@@"|grep "+"
+			diff -u /tmp/filelist.before /tmp/filelist.after|grep -v "@@"|grep -v "+++"|grep -v "---"|grep "+"
 			echo "============================================="
 			exit
 		fi
