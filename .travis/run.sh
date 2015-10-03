@@ -19,7 +19,7 @@ else
 fi
 
 #create "clean" file list before build
-find |grep -v .git sort > /tmp/filelist.before
+find |grep -v .git | sort > /tmp/filelist.before
 
 for BOARD in $BOARDS; do
 	if [ -z "$TARGET" ]; then
