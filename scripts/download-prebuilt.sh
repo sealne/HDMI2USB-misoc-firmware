@@ -49,6 +49,8 @@ if [ "$DIRTY" = "no" ]; then
 		echo ""
 		exit 1
 	fi
+else
+	rm -rf $PREBUILT_DIR
 fi
 
 BASE_URL="https://github.com/${PREBUILT_REPO}/raw/master/archive/${PREBUILT_RELEASE}/${BOARD}/${TARGET}"
