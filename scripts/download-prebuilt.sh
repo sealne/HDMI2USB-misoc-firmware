@@ -20,6 +20,7 @@ CURRENT_GIT_REVISION=$(git describe)
 : ${TARGET:="hdmi2usb"}
 : ${PREBUILT_RELEASE:=$CURRENT_GIT_REVISION}
 : ${PREBUILT_REPO:="timvideos/HDMI2USB-firmware-prebuilt"}
+: ${DIRTY:="no"}
 
 
 if [ "$TARGET" = "hdmi2usb" ]; then
@@ -33,19 +34,21 @@ FIRMWARE="hdmi2usb.hex"
 GATEWARE_DIR="$TOP_DIR/third_party/misoc/build"
 FIRMWARE_DIR="$TOP_DIR/firmware/fx2"
 
-# Check nothing exists before we start
-if [ -e $GATEWARE_DIR/$GATEWARE -o -e $FIRMWARE_DIR/$FIRMWARE ]; then
-	echo ""
-	echo "It looks like a build has been run before"
-	echo "Run make clean then try again"
-	echo ""
-	exit 1
-elif [ -e $PREBUILT_DIR ]; then
-	echo ""
-	echo "It looks like a download has been run before"
-	echo "Run make clean then try again"
-	echo ""
-	exit 1
+if [ "$DIRTY" = "no" ]; then
+	# Check nothing exists before we start
+	if [ -e $GATEWARE_DIR/$GATEWARE -o -e $FIRMWARE_DIR/$FIRMWARE ]; then
+		echo ""
+		echo "It looks like a build has been run before"
+		echo "Run make clean then try again"
+		echo ""
+		exit 1
+	elif [ -e $PREBUILT_DIR ]; then
+		echo ""
+		echo "It looks like a download has been run before"
+		echo "Run make clean then try again"
+		echo ""
+		exit 1
+	fi
 fi
 
 BASE_URL="https://github.com/${PREBUILT_REPO}/raw/master/archive/${PREBUILT_RELEASE}/${BOARD}/${TARGET}"
